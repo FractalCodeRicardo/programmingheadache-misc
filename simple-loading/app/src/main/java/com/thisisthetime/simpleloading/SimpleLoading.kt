@@ -1,14 +1,21 @@
 package com.thisisthetime.simpleloading
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thisisthetime.simpleloading.ui.theme.SimpleloadingTheme
@@ -32,7 +39,7 @@ class SimpleLoadingViewModel : ViewModel() {
 
     fun longProcess() {
         _state.update { it.copy(loading = true) }
-        viewModelScope.launch {
+        val launch = viewModelScope.launch {
             delay(2000)
             _state.update { it.copy(loading = false) }
         }
@@ -44,15 +51,19 @@ class SimpleLoadingViewModel : ViewModel() {
 @Composable
 fun SimpleLoadingScreen(viewModel: SimpleLoadingViewModel) {
     val state by viewModel.state.collectAsState()
-    Column {
-        Text("Simple loading")
-
+    Column(
+        modifier = Modifier.fillMaxSize().padding(100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Simple loading", color = MaterialTheme.colorScheme.primary)
+        Spacer(modifier = Modifier.padding(20.dp))
         if (state.loading) {
             CircularProgressIndicator()
+            Text("Wait...", color = MaterialTheme.colorScheme.primary)
         }
-
-        Button(onClick = { viewModel.longProcess() }) {
-            Text("Long process")
+        Spacer(modifier = Modifier.padding(20.dp))
+        ElevatedButton(onClick = { viewModel.longProcess() }) {
+            Text("Click and wait")
         }
     }
 }
