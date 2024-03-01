@@ -17,7 +17,7 @@ fun CenterVerticallyScreen() {
     // 3. Create a column with fill max size
     Column(
         modifier = Modifier.fillMaxSize(),
-        // 5. Add the vertical arragement property
+        // 5. Add the vertical arrangement property
         verticalArrangement = Arrangement.Center // Done! =
     ){
         // 4. Add the thing you cant to center
