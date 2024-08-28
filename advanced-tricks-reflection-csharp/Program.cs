@@ -3,5 +3,6 @@ using advanced_tricks_reflection_csharp;
 
 Console.WriteLine("Hello, World!");
 
+var tricks = new Tricks();
 
-new Tricks().getNameWithLambda();
+tricks.CallPrivateMethod();

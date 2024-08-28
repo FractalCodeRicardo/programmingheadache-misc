@@ -66,4 +66,25 @@ public class Tricks
         }
         return target;
     }
+
+
+    public void CallPrivateMethod() {
+         PrivateMethodClass myClassInstance = new PrivateMethodClass();
+
+        // Get the type of MyClass
+        Type type = typeof(PrivateMethodClass);
+
+        // Retrieve the private method without parameters
+        MethodInfo privateMethod = type.GetMethod("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+        
+        // Invoke the private method
+        privateMethod.Invoke(myClassInstance, null);
+
+        // Retrieve the private method with parameters
+        MethodInfo privateMethodWithArgs = type.GetMethod("PrivateMethodWithArgs", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // Invoke the private method with parameters
+        object result = privateMethodWithArgs.Invoke(myClassInstance, new object[] { 42, "Hello" });
+        Console.WriteLine(result);
+    }
 }
