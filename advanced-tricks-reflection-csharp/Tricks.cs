@@ -87,4 +87,13 @@ public class Tricks
         object result = privateMethodWithArgs.Invoke(myClassInstance, new object[] { 42, "Hello" });
         Console.WriteLine(result);
     }
+
+    public void ExpressionBuild() {
+        var list = new List<Foo>() { new Foo() { Name = "Foo" }, new Foo() { Name = "Bar" } };
+
+        var predicate = ExpressionBuilder.BuildPredicate<Foo>("Name", "Foo");
+        var filtered = list.Where(predicate).ToList();
+
+        filtered.ForEach(x => Console.WriteLine(x.Name));
+    }
 }

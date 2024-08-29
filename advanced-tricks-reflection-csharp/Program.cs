@@ -5,4 +5,5 @@ Console.WriteLine("Hello, World!");
 
 var tricks = new Tricks();
 
-tricks.CallPrivateMethod();
+//tricks.CallPrivateMethod();
+tricks.ExpressionBuild();
