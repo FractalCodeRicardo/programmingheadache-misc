@@ -46,13 +46,14 @@ public class Tricks
     }
 
 
-    public void Mapper() {
+    public void Mapper()
+    {
         var foo = new Foo();
         var bar = Map<Foo, Bar>(foo);
     }
 
-      public static TTarget Map<TSource, TTarget>(TSource source)
-        where TTarget : new()
+    public static TTarget Map<TSource, TTarget>(TSource source)
+      where TTarget : new()
     {
         TTarget target = new TTarget();
         foreach (PropertyInfo sourceProperty in typeof(TSource).GetProperties())
@@ -68,15 +69,16 @@ public class Tricks
     }
 
 
-    public void CallPrivateMethod() {
-         PrivateMethodClass myClassInstance = new PrivateMethodClass();
+    public void CallPrivateMethod()
+    {
+        PrivateMethodClass myClassInstance = new PrivateMethodClass();
 
         // Get the type of MyClass
         Type type = typeof(PrivateMethodClass);
 
         // Retrieve the private method without parameters
         MethodInfo privateMethod = type.GetMethod("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance);
-        
+
         // Invoke the private method
         privateMethod.Invoke(myClassInstance, null);
 
@@ -88,12 +90,21 @@ public class Tricks
         Console.WriteLine(result);
     }
 
-    public void ExpressionBuild() {
+    public void ExpressionBuild()
+    {
         var list = new List<Foo>() { new Foo() { Name = "Foo" }, new Foo() { Name = "Bar" } };
 
         var predicate = ExpressionBuilder.BuildPredicate<Foo>("Name", "Foo");
         var filtered = list.Where(predicate).ToList();
 
         filtered.ForEach(x => Console.WriteLine(x.Name));
+    }
+
+    public void Extensions()
+    {
+        var numbers = new List<int> { 1, 2, 3, 4, 5 };
+        var evenNumbers = numbers.Filter(n => n % 2 == 0);
+
+        evenNumbers.ToList().ForEach(x => Console.WriteLine(x));
     }
 }
