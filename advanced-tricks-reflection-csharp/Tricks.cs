@@ -9,11 +9,14 @@ public class Tricks
 
     public void GetNameWithLambda()
     {
-        var nameProp = Name((Foo i) => i.Bar);
+        // I nstead of
+        // var nameProp = "Name"; 
+        // you can use 
+        var nameProp = PropertyName((Foo i) => i.Name);
         Console.WriteLine(nameProp);
     }
 
-    public static string Name<Entity, Prop>(
+    public static string PropertyName<Entity, Prop>(
         Expression<Func<Entity, Prop>> expression)
     {
         MemberExpression member = expression.Body as MemberExpression;
@@ -27,9 +30,7 @@ public class Tricks
         var foo = new Foo();
         var bar = new Bar();
 
-        bar.Name = "Hello Foo";
         var mapper = new Mapper<Bar, Foo>();
-
         mapper.Map(bar, foo);
 
         Console.WriteLine(foo.Name);
@@ -58,8 +59,7 @@ public class Tricks
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 1);
 
-        var filtered = dates
-            .Between(x => x.Date, from, to);
+        var filtered = dates.Between(x => x.Date, from, to);
 
         filtered.ToList().ForEach(x => Console.WriteLine(x.Date));
     }
@@ -71,13 +71,13 @@ public class Tricks
         };
 
         var builder = new ExpressionBuilder<Foo>();
+        
         var condition = new List<Tuple<string, object>>() {
             new Tuple<string, object>("Bar", "varValue"),
             new Tuple<string, object>("Date", new DateTime(2024, 1, 1))
         };
 
         var expression = builder.ComplexExpression(condition);
-
         var filtered = list.Where(expression).ToList();
 
         filtered.ForEach(x => Console.WriteLine(x.Bar));
