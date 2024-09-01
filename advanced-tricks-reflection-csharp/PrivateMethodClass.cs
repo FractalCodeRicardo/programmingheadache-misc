@@ -2,13 +2,8 @@
 
 public class PrivateMethodClass 
 {
-    private void PrivateMethod()
+    private void GetPrivateThings()
     {
-        Console.WriteLine("Private method called!");
-    }
-
-    private string PrivateMethodWithArgs(int number, string text)
-    {
-        return $"Called with arguments: {number} and {text}";
-    }
+        Console.WriteLine("This is private");
+    } 
 }

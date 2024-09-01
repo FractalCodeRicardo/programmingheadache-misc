@@ -1,34 +1,47 @@
 using System.Linq.Expressions;
 
-public static class ExpressionBuilder
+namespace advanced_tricks_reflection_csharp;
+
+public class ExpressionBuilder<T>
 {
-    public static Func<T, bool> BuildPredicate<T>(string propertyName, object value)
+
+    // creates expresion entity => entity.propertyName == value
+
+    public Expression CreatePropertyExpression(Expression entityParameter, string propertyName, object? value)
     {
-        // Get the type of the object
-        Type type = typeof(T);
-        
-        // Get the property info for the specified property name
-        var property = type.GetProperty(propertyName);
-        if (property == null)
+        var property = typeof(T).GetProperty(propertyName);
+        var propertyAccess = Expression.MakeMemberAccess(entityParameter, property);
+        var valueExpression = Expression.Constant(value, property.PropertyType);
+        var equalsExpression = Expression.Equal(propertyAccess, valueExpression);
+
+        return equalsExpression;
+    }
+
+    public Func<T, bool> ComplexExpression(
+        List<Tuple<string, object>> conditions
+        )
+    {
+        Expression expression = null;
+        var parameter = Expression.Parameter(typeof(T), "entity");
+
+        foreach (var condition in conditions)
         {
-            throw new ArgumentException($"Property '{propertyName}' not found on type '{type.Name}'");
+            var currentExpression = CreatePropertyExpression(parameter, condition.Item1, condition.Item2);
+
+            if (expression == null)
+            {
+                expression = currentExpression;
+                continue;
+            }
+
+            expression = Expression.AndAlso(expression, currentExpression);
         }
 
-        // Create a parameter expression representing the input parameter (e.g., x => ...)
-        var parameter = Expression.Parameter(type, "x");
-        
-        // Create an expression to access the property (e.g., x.PropertyName)
-        var propertyAccess = Expression.Property(parameter, property);
-        
-        // Create a constant expression for the value to compare (e.g., ... == value)
-        var constant = Expression.Constant(value);
-        
-        // Create a binary expression representing equality (e.g., x.PropertyName == value)
-        var equality = Expression.Equal(propertyAccess, constant);
-        
-        // Combine the parameter and the equality expression into a lambda expression (e.g., x => x.PropertyName == value)
-        var lambda = Expression.Lambda<Func<T, bool>>(equality, parameter);
-        
+        var lambda = Expression.Lambda<Func<T, bool>>(expression, parameter);
+
         return lambda.Compile();
     }
+
+
+
 }

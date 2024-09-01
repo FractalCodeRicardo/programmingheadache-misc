@@ -2,12 +2,15 @@ namespace advanced_tricks_reflection_csharp;
 
 public static class CollectionExtensions
 {
-    public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+    public static IEnumerable<T> Between<T>(
+        this IEnumerable<T> source, 
+        Func<T, DateTime> getDate, 
+        DateTime from,
+        DateTime to)
     {
-        foreach (var item in source)
-        {
-            if (predicate(item))
-                yield return item;
-        }
+
+        return source.Where(entity => 
+            getDate(entity) >= from && 
+            getDate(entity) <= to);
     }
 }
