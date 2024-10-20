@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 public class Queries
 {
 
-    public static void IncludeProducts()
+    public static void Include()
     {
         MeasureTime("Include", () =>
         {
@@ -34,7 +34,36 @@ public class Queries
 
     }
 
-        public static void ManualIncludeInClause()
+    public static void ManualIncludeCached()
+    {
+        MeasureTime("Manual Include Cached", () =>
+        {
+            var context = new Context();
+            var cache = new Dictionary<int, Category>();
+            var products = context.Products
+                    .ToList();
+
+            foreach (var product in products)
+            {
+                var categoryId = product.CategoryId;
+
+                if (!cache.ContainsKey(categoryId))
+                {
+                    cache[categoryId] = context
+                    .Categories
+                    .Where(i => i.CategoryId == categoryId)
+                    .First();
+
+                }
+
+                product.Category = cache[categoryId];
+
+            }
+        });
+
+    }
+
+    public static void ManualIncludeInClause()
     {
         MeasureTime("Manual Include In", () =>
         {
@@ -72,6 +101,6 @@ public class Queries
 
         TimeSpan ts = stopwatch.Elapsed;
 
-        Console.WriteLine($"{label}\t\t{ts.TotalMilliseconds}");
+        Console.WriteLine($"{label}\t\t\t{ts.TotalMilliseconds}");
     }
 }
