@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 public class Queries
 {
 
-    public static void Include()
+    public static void NavigationProperty()
     {
         MeasureTime("Include", () =>
         {
@@ -85,6 +86,27 @@ public class Queries
             {
                 product.Category = categories[product.CategoryId];
             }
+        });
+
+    }
+
+    public static void ExplicitJoin()
+    {
+
+        MeasureTime("Explicit join", () =>
+        {
+            var context = new Context();
+            var res = from product in context.Products
+                      join category in context.Categories
+                      on product.CategoryId equals category.CategoryId
+                      select new
+                      {
+                          product = product,
+                          category = category
+
+                      };
+
+            var list = res.ToList();
         });
 
     }

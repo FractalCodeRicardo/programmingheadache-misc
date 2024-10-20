@@ -1,6 +1,7 @@
 ﻿//Data.Create();
 
-Queries.Include();
-Queries.ManualInclude();
+Queries.NavigationProperty();
+//Queries.ManualInclude();
 Queries.ManualIncludeCached();
 Queries.ManualIncludeInClause();
+Queries.ExplicitJoin();
