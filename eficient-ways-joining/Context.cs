@@ -7,17 +7,12 @@ public class Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("database=EficientWays;server=ricardopc\\sqldev;user=sa;password=Desarrollo01.;TrustServerCertificate=True");
+        optionsBuilder.UseSqlite("Data Source=app.db"); 
     }
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configure relationships, keys, etc.
-        modelBuilder.Entity<Product>()
-            .HasOne<Category>()
-            .WithMany()
-            .HasForeignKey(p => p.CategoryId)
-            .OnDelete(DeleteBehavior.NoAction);
+
     }
 }
