@@ -110,6 +110,31 @@ public class Queries
 
     }
 
+    public static void SQL()
+    {
+        MeasureTime("Explicit join", () =>
+        {
+            var context = new Context();
+            var query = context.Database
+                            .SqlQuery<ProductDto>(
+                                $"""
+                                SELECT 
+                                    p.ProductId,
+                                    p.Name,
+                                    p.Price,
+                                    c.CategoryId,
+                                    c.Name as CategoryName
+                                FROM 
+                                Products p 
+
+                                JOIN Categories c 
+                                    ON p.CategoryId = c.CategoryId
+                                """)
+                            .ToList();
+        });
+
+    }
+
     public static void MeasureTime(string label, Action action)
     {
         Stopwatch stopwatch = new Stopwatch();

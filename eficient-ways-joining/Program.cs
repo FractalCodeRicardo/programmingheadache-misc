@@ -5,3 +5,4 @@ Queries.ManualInclude();
 Queries.ManualIncludeCached();
 Queries.ManualIncludeInClause();
 Queries.ExplicitJoin();
+Queries.SQL();
