@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 public class Data
@@ -5,13 +6,8 @@ public class Data
 
     public static void RemoveAll(Context context)
     {
-        var categories = context.Categories.ToList();
-        context.Categories.RemoveRange(categories);
-
-        var products = context.Products.ToList();
-        context.Products.RemoveRange(products);
-        context.SaveChanges();
-
+        context.Database.ExecuteSqlRaw("DELETE FROM Products");
+        context.Database.ExecuteSqlRaw("DELETE FROM Categories");
     }
 
     public static void CreateProducts(Context context, int num,List<Category> categories)

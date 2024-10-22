@@ -17,9 +17,9 @@ public class Queries
 
     }
 
-    public static void ManualInclude()
+    public static void Manual()
     {
-        MeasureTime("Manual Include", () =>
+        MeasureTime("Manual", () =>
         {
             var context = new Context();
             var products = context.Products
@@ -35,9 +35,9 @@ public class Queries
 
     }
 
-    public static void ManualIncludeCached()
+    public static void ManualCaching()
     {
-        MeasureTime("Manual Include Cached", () =>
+        MeasureTime("Manual caching", () =>
         {
             var context = new Context();
             var cache = new Dictionary<int, Category>();
@@ -64,9 +64,9 @@ public class Queries
 
     }
 
-    public static void ManualIncludeInClause()
+    public static void AllInOneCall()
     {
-        MeasureTime("Manual Include In", () =>
+        MeasureTime("All in one", () =>
         {
             var context = new Context();
             var products = context.Products
@@ -90,10 +90,10 @@ public class Queries
 
     }
 
-    public static void ExplicitJoin()
+    public static void SqlLikeJoin()
     {
 
-        MeasureTime("Explicit join", () =>
+        MeasureTime("Sql Like join", () =>
         {
             var context = new Context();
             var res = from product in context.Products
@@ -112,7 +112,7 @@ public class Queries
 
     public static void SQL()
     {
-        MeasureTime("Explicit join", () =>
+        MeasureTime("SQL", () =>
         {
             var context = new Context();
             var query = context.Database
@@ -147,6 +147,6 @@ public class Queries
 
         TimeSpan ts = stopwatch.Elapsed;
 
-        Console.WriteLine($"{label}\t\t\t{ts.TotalMilliseconds}");
+        Console.WriteLine($"{label},{ts.TotalMilliseconds}");
     }
 }
