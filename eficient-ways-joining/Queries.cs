@@ -72,14 +72,14 @@ public class Queries
             var products = context.Products
                     .ToList();
 
-            var ids = products
+            var idsToRetrieve = products
                 .Select(i => i.CategoryId)
                 .Distinct()
                 .ToList();
 
             var categories = context
                 .Categories
-                .Where(i => ids.Contains(i.CategoryId))
+                .Where(i => idsToRetrieve.Contains(i.CategoryId))
                 .ToDictionary(i => i.CategoryId, i => i);
 
             foreach (var product in products)
@@ -103,7 +103,6 @@ public class Queries
                       {
                           product = product,
                           category = category
-
                       };
 
             var list = res.ToList();
